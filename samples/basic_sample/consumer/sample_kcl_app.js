@@ -8,6 +8,7 @@ SPDX-License-Identifier: Apache-2.0
 var util = require('util');
 var kcl = require('../../..');
 var logger = require('../../util/logger');
+var writeData = require('../writer/write_data');
 
 /**
  * A simple implementation for the record processor (consumer) that simply writes the data to a log file.
@@ -34,13 +35,14 @@ function recordProcessor() {
         return;
       }
       var records = processRecordsInput.records;
-      var record, data, sequenceNumber, partitionKey;
+      var record, data, sequenceNumber, partitionKey, dataWriteStatus;
       for (var i = 0 ; i < records.length ; ++i) {
         record = records[i];
         data = new Buffer(record.data, 'base64').toString();
         sequenceNumber = record.sequenceNumber;
         partitionKey = record.partitionKey;
-        log.info(util.format('ShardID: %s, Record: %s, SeqenceNumber: %s, PartitionKey:%s', shardId, data, sequenceNumber, partitionKey));
+        dataWriteStatus = writeData(data, shardId);
+        // log.info(util.format('ShardID: %s, Record: %s, SeqenceNumber: %s, PartitionKey:%s', shardId, data, sequenceNumber, partitionKey));
       }
       if (!sequenceNumber) {
         completeCallback();

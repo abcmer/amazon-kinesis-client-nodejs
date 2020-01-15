@@ -6,3 +6,9 @@
 .idea
 package-lock.json
 
+# Ignore output files
+samples/basic_sample/output/*
+!samples/basic_sample/output/.gitkeep 
+
+.vscode
+

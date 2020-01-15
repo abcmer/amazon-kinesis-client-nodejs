@@ -87,7 +87,7 @@ function sampleProducer(kinesis, config) {
           return;
         }
         var count = 0;
-        while (count < 10) {
+        while (count < 100) {
           setTimeout(_writeToKinesis, 1000);
           count++;
         }
